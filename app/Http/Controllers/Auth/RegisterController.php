@@ -4,11 +4,10 @@ namespace App\Http\Controllers\Auth;
 
 use App\User;
 use App\Http\Controllers\Controller;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Foundation\Auth\RegistersUsers;
-
+use Illuminate\Http\Request;
 class RegisterController extends Controller
 {
     /*
@@ -22,7 +21,8 @@ class RegisterController extends Controller
     |
     */
 
-    //use RegistersUsers;
+
+    use RegistersUsers;
 
     /**
      * Where to redirect users after registration.
@@ -41,54 +41,12 @@ class RegisterController extends Controller
         $this->middleware('guest');
     }
 
-    public function showRegistrationForm()
-    {
-        return view('auth.register');
-    }
-
-    public function register(Request $request)
-    {
-        /** @var User $user */
-        $validatedData = $request->validate([
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'img' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-
-        $validatedData['password'] = Hash::make(array_get($validatedData, 'password'));
-        $user = app(User::class)->create($validatedData);
-
-        if($request->hasfile('img'))
-        {
-            $file = $request->file('img');
-            $name = $file->getClientOriginalName();
-            $filename =time().$name;
-            $file->move('storage/users/', $filename);
-            $user->img = $filename;
-        }
-
-        $user->save();
-        auth()->guard()->login($user);
-
-        return redirect()->to('/shop/home');
-    }
-
     /**
      * Get a validator for an incoming registration request.
      *
      * @param  array  $data
      * @return \Illuminate\Contracts\Validation\Validator
      */
-    /*protected function validator(array $data)
-    {
-        return Validator::make($data, [
-            'username' => 'required|string|max:255|unique:users',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:6|confirmed',
-            'img' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048',
-        ]);
-    }*/
 
     /**
      * Create a new user instance after a valid registration.
@@ -96,13 +54,36 @@ class RegisterController extends Controller
      * @param  array  $data
      * @return \App\User
      */
-    /*protected function create(array $data)
+    public function showRegistrationForm()
     {
-        return User::create([
-            'username' => $data['username'],
-            'email' => $data['email'],
-            'password' => Hash::make($data['password']),
-            'img' => $data['img'],
+        return view('auth.register');
+    }
+  
+   
+     public function register(Request $request)
+    {
+         /** @var User $user */
+         $validatedData = $request->validate([
+            'username' => 'required|string|max:255|unique:users',
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:6|confirmed',
+            'image' => 'mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
-    }*/
+
+        $validatedData['password'] = Hash::make(array_get($validatedData, 'password'));
+        $user = app(User::class)->create($validatedData);
+         if($request->hasfile('image'))
+        {
+            $file = $request->file('image');
+            $name = $file->getClientOriginalName();
+            $filename =time().$name;
+            $file->move('storage/users/', $filename);
+            $user->image = $filename;
+        }
+         $user->save();
+        auth()->guard()->login($user);
+         return redirect()->to('/');
+    }
 }
+
+   

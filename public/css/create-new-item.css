@@ -1,0 +1,54 @@
+
+.card-header .row .col-md-6 .nav-link{
+	
+	font-size:70px
+}
+label{ 
+font-wight:bold !important;
+}
+
+.navbar .navbar-brand,.navbar .nav-link
+{
+	color:rgba(255,255,255,.5)!important;
+}
+.badge{
+	width: 50px;
+    position: absolute;
+    margin-left:;
+    margin-top: 8px;
+	border-radius:0;
+}
+@media (max-width: 992px) { 
+	.pad::after{
+	font-size:40px;
+	content:"|";
+	color:#6c757d;
+	padding-left:0px;	
+	}	
+.card-header .row .col-md-6 .nav-link{
+	font-size:40px;
+}	
+}	
+	@media (max-width: 375px) { 
+	.card-header .row .col-md-6 .nav-link{
+	font-size:20px;
+		}
+	.pad::after{
+	font-size:20px;
+	content:"|";
+	color:#6c757d;
+	padding-left:0px;	
+	}				
+		
+	}
+    .required:after { 
+	content:"*";
+	color:red;
+	font-size:10px;
+	width:30px;
+	background:blue;
+	
+	
+	}
+
+

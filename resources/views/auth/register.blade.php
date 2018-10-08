@@ -1,81 +1,93 @@
 @extends('layouts.app')
 
-@section('content')
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-5">
-            <ul class="nav justify-content-center">
-                <li class="nav-item">
-                    <a class="nav-link text-muted size-48" href="{{ route('signin') }}">Login</a>
-                </li>
-                <li class="nav-item disabled">
-                    <a class="nav-link text-muted px-0 size-48">|</a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link text-success size-48" href="{{ route('signup') }}">Signup</a>
-                </li>
-            </ul>
-
-            <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
-                @csrf
-
-                <div class="form-group">
-                    <input id="username" type="text" class="form-control{{ $errors->has('username') ? ' is-invalid' : '' }}" name="username" placeholder="Type your username" value="{{ old('username') }}" required autofocus>
-
-                    @if ($errors->has('username'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('username') }}</strong>
-                        </span>
-                    @endif
-                </div>
-
-                <div class="form-group">
-                    <input id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password" placeholder="Type a complex password" required>
-
-                    @if ($errors->has('password'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('password') }}</strong>
-                        </span>
-                    @endif
-                </div>
-
-                <div class="form-group">
-                    <input id="password-confirm" type="password" class="form-control" name="password_confirmation" placeholder="Type a password again" required>
-                </div>
-
-                <div class="form-group">
-                    <input id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" placeholder="Type a valid email" value="{{ old('email') }}" required>
-
-                    @if ($errors->has('email'))
-                        <span class="invalid-feedback" role="alert">
-                            <strong>{{ $errors->first('email') }}</strong>
-                        </span>
-                    @endif
-                </div>
-
-                <div class="form-group">
-                    <div class="form-row">
-                        <div class="col-md-6">
-                            <input id="img" type="file" class="form-control-file" name="img" onchange="loadFile(event)">
-                        </div>
-                        <div class="col-md-6">
-                            <div class="img-box">
-                                <img id="output" src="{{ asset("storage/users/icon.jpg") }}" alt="not found" class="img-fluid img-thumbnail"/>
+@section('content')	
+<!-- Singup Form -->
+    <section class="signup-form bg-light">	
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="card border-0 bg-light">
+                        <div class="card-header bg-light border-0">
+                        <!-- Auth Links In Singup Form -->
+                            <div class="form-group row justify-content-sm-center">
+                                <div class="col-6 pr-0 pad text-sm-right text-center">
+                                <a href="{{route('login')}}" class="nav-link d-inline text-muted">Login</a>
+                                </div>	
+                                <div class="col-6  pl-0 text-sm-left text-center">
+                                    <a href="" class="nav-link d-inline text-success">Signup</a>
+                                </div>
                             </div>
+                        </div>
+                        <div class="card-body bg-light border-0">
+                            <form enctype="multipart/form-data" method="POST" action="{{ route('register') }}">
+                                @csrf
+                                <!-- username -->
+                                <div class="form-group row justify-content-sm-center">
+                                    <div class="col-md-12 col-sm-8">
+                                        <span>
+                                            <i class="fas fa-asterisk validate-asterisk" aria-hidden="true"></i>
+                                        </span>
+                                        <input placeholder="Type your username" id="username" type="text" class="form-control {{ $errors->has('password') ? ' is-invalid' : '' }}" name="username" value="{{ old('username') }}" required autofocus>	
+                                        @if ($errors->has('username'))
+                                            <span class="invalid-feedback" role="alert">
+                                                <strong>{{ $errors->first('username') }}</strong>
+                                            </span>
+                                        @endif									   
+                                    </div>
+                                </div>
+                                <!-- password -->								
+                                <div class="form-group row justify-content-sm-center">
+                                    <div class="col-md-12 col-sm-8">
+                                        <span>
+                                            <i class="fas fa-asterisk validate-asterisk" aria-hidden="true"></i>
+                                        </span>
+                                            <input placeholder="Type a Complex password" id="password" type="password" class="form-control{{ $errors->has('password') ? ' is-invalid' : '' }}" name="password"  required>
+                                    </div>
+                                </div>
+                                <!-- confirm-password -->
+                                <div class="form-group row justify-content-sm-center">
+                                    <div class="col-md-12 col-sm-8">
+                                        <span>
+                                            <i class="fas fa-asterisk validate-asterisk" aria-hidden="true"></i>
+                                        </span>
+                                        <input placeholder="Type a password again" id="password-confirm" type="password" class="form-control" name="password_confirmation" required>
+                                    </div>
+                                </div>
+                                <!-- email -->
+                                <div class="form-group row justify-content-sm-center">
+                                    <div class="col-md-12 col-sm-8">
+                                        <input placeholder="Type a Valid email" id="email" type="email" class="form-control{{ $errors->has('email') ? ' is-invalid' : '' }}" name="email" value="" required>
+                                        @if ($errors->has('email'))
+                                            <span class="invalid-feedback" role="alert">
+                                                    <strong>{{ $errors->first('email') }}</strong>
+                                            </span>
+                                        @endif
+                                    </div>
+                                </div>
+                                <!-- Username Image // image must validate 
+                                    .extenstion after lastindexof('.')-->
+                                <div class="form-group row justify-content-sm-center">
+                                    <div class="col-md-6 col-sm-4">
+                                        <input id="image" type="file" class="form-control" name="image" value=""
+                                        onchange="document.getElementById('image1').src = window.URL.createObjectURL(this.files[0])">
+                                    </div>					
+                                    <div class="col-md-6 col-sm-4">
+                                        <img id="image1" class="img-thumbnail" src="{{asset('img/defaultUser.png')}}" alt="Username Singup Image" min-height="195px" min-width="195px">
+                                    </div>
+                                </div>
+                                <!-- Signup Button-->
+                                <div class="form-group row mb-0 justify-content-sm-center">
+                                    <div class="col-md-12 col-sm-8"> 
+                                        <button type="submit" class="btn btn-success w-100">
+                                            Signup
+                                        </button>
+                                    </div>
+                                </div>
+                            </form>
                         </div>
                     </div>
                 </div>
-
-                <div class="form-group mb-0">
-                    <button type="submit" class="btn btn-success form-control">
-                        Signup
-                    </button>
-                </div>
-            </form>
+            </div>
         </div>
-    </div>
-</div>
-@endsection
-
-
-
+    </section>
+@endsection	

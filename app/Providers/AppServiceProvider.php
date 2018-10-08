@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
-use App\Category;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Schema;
+use App\Category;
+use App\Item;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -14,14 +16,16 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
+        Schema::defaultStringLength(191);
         view()->composer('layouts.app', function($view)
         {
-            $categories = Category::all();
-            $view->with('categories', $categories);
+            $categoriesHeader = Category::all();
+            $view->with('categoriesHeader', $categoriesHeader);
         });
-    }
+      
 
-    /**
+    }
+    /**}
      * Register any application services.
      *
      * @return void

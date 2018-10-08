@@ -1,24 +1,23 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="container">
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">Dashboard</div>
 
-            <h1 class="text-center font-weight-bold">{{ $name }}</h1>
-            <div class="row">
-                @foreach($items as $item)
-                    <div class="col-md-3 p-3" >
-                        <div class="card">
-                            <img class="card-img-top img-thumbnail border-light bg-white" style="max-height: 250px;" src="{{ asset('storage/items/'.$item->img) }}" alt="Card image cap">
-                            <span class="price-label">${{ $item->price }}</span>
-                            <div class="card-body">
-                                <h4 class="card-title"><a href="{{ route('product.route', $item->id) }}">{{ $item->name }}</a></h4>
-                                <p class="card-text">{{ $item->description }}</p>
-                                <p class="card-text text-right"><small class="text-muted">{{ $item->created_at }}</small></p>
-                            </div>
+                <div class="card-body">
+                    @if (session('status'))
+                        <div class="alert alert-success" role="alert">
+                            {{ session('status') }}
                         </div>
-                    </div>
-                @endforeach
+                    @endif
+
+                    You are logged in!
+                </div>
             </div>
-        {{ $items->render() }}
+        </div>
     </div>
+</div>
 @endsection

@@ -3,9 +3,13 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
+use App\User;
+use App\Http\Controllers\Redirect;
 class Comment extends Model
 {
+   
+
     protected $fillable = [
         'id', 'comment',
     ];
@@ -17,5 +21,5 @@ class Comment extends Model
     public function item(){
         return $this->belongsTo('App\Item');
     }
-
 }
+
